@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="../static/style.css" th:href="@{/style.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<h2>View vehicles</h2>
+
+<table>
+    <tr>
+        <th>Year</th>
+        <th>Odometer</th>
+        <th>Color</th>
+        <th>Price</th>
+    </tr>
+
+    <tr th:each="p: ${vehicles}">
+        <td th:text="${p.year}"></td>
+        <td th:text="${p.odometer}"></td>
+        <td th:text="${p.color}"></td>
+        <td th:text="${p.price}"></td>
+        <td>
+            <form th:action="@{/deleteVehicle}" method="post">
+                <input type="hidden" name="id" th:value="${p.id}"/>
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+
+</table>
+
+<h2>Add a vehicle</h2>
+<form action="/addVehicle" method="post">
+    Year: <input type="number" name="year"><br>
+    Odometer: <input type="number" name="odometer"><br>
+    Color: <input type="text" name="color"><br>
+    Price: <input type="number" name="price"><br>
+    <button type="submit">Add</button>
+</form>
+
+</body>
+</html>

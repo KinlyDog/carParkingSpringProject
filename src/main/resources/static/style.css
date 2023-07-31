@@ -1,0 +1,17 @@
+table {
+    border-collapse: collapse;
+    width: 40%;
+}
+
+th, td {
+    text-align: center;
+}
+
+form {
+    text-align: left; /* Выравниваем содержимое формы по центру */
+}
+
+/*form input {*/
+/*    display: block; !* Превращаем каждое поле ввода в блочный элемент *!*/
+/*    text-align: center; !* Выравниваем содержимое внутри каждого поля ввода по центру *!*/
+/*}*/

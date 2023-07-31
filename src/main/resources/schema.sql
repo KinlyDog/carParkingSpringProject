@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS vehicle (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    year INT NOT NULL,
+    odometer INT NOT NULL,
+    color VARCHAR(50) NOT NULL,
+    price DECIMAL NOT NULL
+);

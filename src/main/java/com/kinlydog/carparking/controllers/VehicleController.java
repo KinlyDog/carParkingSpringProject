@@ -1,66 +1,107 @@
 package com.kinlydog.carparking.controllers;
 
+import com.kinlydog.carparking.models.AllBrands;
+import com.kinlydog.carparking.models.Brand;
 import com.kinlydog.carparking.models.Vehicle;
+import com.kinlydog.carparking.repositoryes.AllBrandsRepository;
+import com.kinlydog.carparking.repositoryes.BrandRepository;
 import com.kinlydog.carparking.repositoryes.VehicleRepository;
-import com.kinlydog.carparking.service.VehicleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 public class VehicleController {
+    private static final String REDIRECT_ADMIN_PANEL = "redirect:adminPanel";
 
     private final VehicleRepository vehicleRepository;
-    private final VehicleService vehicleService;
+    private final BrandRepository brandRepository;
+    private final AllBrandsRepository allBrandsRepository;
 
     public VehicleController(
-            VehicleRepository vehicleRepository, VehicleService vehicleService) {
+            VehicleRepository vehicleRepository,
+            BrandRepository brandRepository,
+            AllBrandsRepository allBrandsRepository) {
 
         this.vehicleRepository = vehicleRepository;
-        this.vehicleService = vehicleService;
+        this.brandRepository = brandRepository;
+        this.allBrandsRepository = allBrandsRepository;
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
+    public String localhost() {
+        return "/home";
+    }
+
+    @GetMapping("/adminPanel")
     public String allVehicle(Model model) {
         Iterable<Vehicle> vehicles = vehicleRepository.findAll();
+        Iterable<Brand> brands = brandRepository.findAll();
 
         model.addAttribute("vehicles", vehicles);
+        model.addAttribute("brands", brands);
 
-        return "home.html";
+        return "adminPanel.html";
+    }
+
+    @GetMapping("/addVehicle")
+    public String addVehicleView(Model model) {
+
+        Iterable<AllBrands> brandsList = allBrandsRepository.findAll();
+        model.addAttribute("brands", brandsList);
+
+        return "addVehicle.html";
+    }
+
+    @PostMapping("/addVehicle")
+    public String addVehicle(@ModelAttribute Vehicle vehicle,
+                             @ModelAttribute Brand brand,
+                             @RequestParam String name) {
+
+
+        brandRepository.save(brand);
+        vehicle.setBrand(brandRepository.findBrandByName(name));
+        vehicleRepository.save(vehicle);
+
+        return REDIRECT_ADMIN_PANEL;
     }
 
     @PostMapping("/deleteVehicle")
     public String deleteVehicle(
             @RequestParam int id) {
 
-        System.out.println("Метод delete работает");
+        vehicleRepository.findVehicleById(id);
 
         vehicleRepository.deleteVehicleById(id);
 
-        return "redirect:home";
+        return REDIRECT_ADMIN_PANEL;
     }
 
-    @PostMapping("/addVehicle")
-    public String addVehicle(
-            @RequestParam int year,
-            @RequestParam int odometer,
-            @RequestParam String color,
-            @RequestParam BigDecimal price) {
+    @PostMapping("/changeVehicleView")
+    public String changeVehicleView(@RequestParam int id,
+                                    @ModelAttribute Vehicle vehicle,
+                                    Model model) {
 
-        System.out.println("Метод add работает");
+        Iterable<AllBrands> brandsList = allBrandsRepository.findAll();
+        model.addAttribute("brands", brandsList);
 
-        vehicleRepository.addVenicle(year, odometer, color, price);
+        model.addAttribute("v", vehicleRepository.findVehicleById(id));
 
-        return "redirect:home";
+        return "changeVehicleView.html";
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "test.html";
+
+    @PostMapping("/changeVehicle")
+    public String changeVehicle(@ModelAttribute Vehicle vehicle,
+                                @ModelAttribute Brand brand,
+                                @RequestParam("idBrand") int idBrand) {
+        brand.setId(idBrand);
+        brandRepository.save(brand);
+        vehicle.setBrand(brand);
+        vehicleRepository.save(vehicle);
+
+        return REDIRECT_ADMIN_PANEL;
     }
 }

@@ -1,0 +1,27 @@
+/*table {*/
+/*    border-collapse: collapse;*/
+/*    width: 50%;*/
+/*}*/
+
+.page-wrapper {
+    margin-left: 20px; /* Регулируйте значение отступа в зависимости от вашего предпочтения */
+}
+
+
+/* Стили для всей таблицы */
+.styled-table {
+    width: 40%;
+    border-collapse: collapse;
+}
+
+/* Стили для ячеек таблицы */
+.styled-table th, .styled-table td {
+    border: 1px solid rgba(0, 0, 0, 0.29);
+    padding: 8px;
+    white-space: nowrap; /* Предотвращает перенос на следующую строку */
+    text-align: center;
+}
+
+
+
+

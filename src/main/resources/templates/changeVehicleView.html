@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <h1>Change vehicle</h1>
+    <form action="/changeVehicle" method="post">
+        <input type="hidden" name="id" th:value="${v.id}">
+        <input type="hidden" name="idBrand" th:value="${v.brand.id}">
+
+        <label for="brand">Brand name:</label>
+        <select id="brand" name="name">
+            <option th:value="${v.brand.name}" th:selected="true" th:text="${v.brand.name}"></option>
+            <option th:each="brand : ${brands}" th:if="${brand.name != v.brand.name}" th:value="${brand.name}"
+                    th:text="${brand.name}"></option>
+        </select><br>
+        Type: <input type="text" name="type" th:value="${v.brand.type}"><br>
+        Year: <input type="text" name="year" th:value="${v.year}"><br>
+        Color: <input type="text" name="color" th:value="${v.color}"><br>
+        Odometer: <input type="number" name="odometer" th:value="${v.odometer}"><br>
+        Price: <input type="text" name="price" th:value="${v.price}"><br>
+        Safety rating: <input type="text" name="safetyRating" th:value="${v.brand.safetyRating}"><br>
+        Seating capacity: <input type="number" name="seatingCapacity" th:value="${v.brand.seatingCapacity}"><br>
+        Fuel capacity: <input type="number" name="fuelCapacity" th:value="${v.brand.fuelCapacity}"><br>
+        Average LKM: <input type="text" name="averageLKM" step="0.01" pattern="[0-9]+(\.[0-9]{1,2})?"
+                            th:value="${v.brand.averageLKM}"><br>
+        <button type="submit">Change</button>
+    </form>
+</div>
+</body>
+</html>

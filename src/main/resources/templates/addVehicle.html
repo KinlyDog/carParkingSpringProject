@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <h2>Add a vehicle</h2>
+    <form action="/addVehicle" method="post">
+        <label for="brand">Brand name:</label>
+        <select id="brand" name="name">
+            <option value="" th:selected="true"></option>
+            <option th:each="brand : ${brands}" th:value="${brand.name}" th:text="${brand.name}"></option>
+        </select><br>
+
+        <!--    Brand name: <input type="text" name="name"><br>-->
+        Type: <input type="text" name="type"><br>
+        Year: <input type="number" name="year"><br>
+        Color: <input type="text" name="color"><br>
+        Odometer: <input type="number" name="odometer"><br>
+        Price: <input type="number" name="price"><br>
+        Safety Rating: <input type="text" name="safetyRating"><br>
+        Seating Capacity: <input type="number" name="seatingCapacity"><br>
+        Fuel Capacity: <input type="number" name="fuelCapacity"><br>
+        Average LKM: <input type="number" name="averageLKM" step="0.01" pattern="[0-9]+(\.[0-9]{1,2})?"><br>
+
+        <button type="submit">Add</button>
+    </form>
+</div>
+</body>
+</html>

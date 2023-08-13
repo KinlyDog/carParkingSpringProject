@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -14,6 +14,12 @@
         <select id="brand" name="name">
             <option value="" th:selected="true"></option>
             <option th:each="brand : ${brands}" th:value="${brand.name}" th:text="${brand.name}"></option>
+        </select><br>
+
+        <label for="enterprise">Enterprises name:</label>
+        <select id="enterprise" name="enterpriseId">
+            <option value="" th:selected="true"></option>
+            <option th:each="e : ${enterprises}" th:value="${e.id}" th:text="${e.name}"></option>
         </select><br>
 
         <!--    Brand name: <input type="text" name="name"><br>-->

@@ -1,10 +1,12 @@
 package com.kinlydog.carparking.controllers;
 
 import com.kinlydog.carparking.models.Brand;
+import com.kinlydog.carparking.models.Enterprise;
 import com.kinlydog.carparking.models.Vehicle;
 //import com.kinlydog.carparking.repositoryes.BrandRepository;
 import com.kinlydog.carparking.repositoryes.AllBrandsRepository;
 import com.kinlydog.carparking.repositoryes.BrandRepository;
+import com.kinlydog.carparking.repositoryes.EnterpriseRepository;
 import com.kinlydog.carparking.repositoryes.VehicleRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Controller;
@@ -23,38 +25,44 @@ public class VehicleController {
     private final VehicleRepository vehicleRepository;
     private final BrandRepository brandRepository;
     private final AllBrandsRepository allBrandsRepository;
+    private final EnterpriseRepository enterpriseRepository;
+
     private final EntityManager entityManager;
 
     public VehicleController(
             VehicleRepository vehicleRepository,
             BrandRepository brandRepository,
             AllBrandsRepository allBrandsRepository,
+            EnterpriseRepository enterpriseRepository,
             EntityManager entityManager) {
 
         this.vehicleRepository = vehicleRepository;
         this.brandRepository = brandRepository;
         this.allBrandsRepository = allBrandsRepository;
         this.entityManager = entityManager;
+        this.enterpriseRepository = enterpriseRepository;
     }
 
     @GetMapping("/")
     public String localhost() {
-        return "/home";
+        return "/homeAndVehicle/home";
     }
 
     @GetMapping("/adminPanel")
     public String allVehicle(Model model) {
         model.addAttribute("vehicles", vehicleRepository.findAll());
+        model.addAttribute("enterprises", enterpriseRepository.findAll());
 
-        return "adminPanel.html";
+        return "homeAndVehicle/adminPanel.html";
     }
 
     @GetMapping("/addVehicle")
     public String addVehicleView(Model model) {
 
         model.addAttribute("brands", allBrandsRepository.findAll());
+        model.addAttribute("enterprises", enterpriseRepository.findAll());
 
-        return "addVehicle.html";
+        return "homeAndVehicle/addVehicle.html";
     }
 
     // Посмотреть, как можно изменить добавление бренда
@@ -62,8 +70,11 @@ public class VehicleController {
     @Transactional
     @PostMapping("/addVehicle")
     public String addVehicle(@ModelAttribute Vehicle vehicle,
-                             @ModelAttribute Brand brand) {
+                             @ModelAttribute Brand brand,
+                             @RequestParam(name = "enterpriseId") int enterpriseId) {
 
+        Enterprise e = entityManager.find(Enterprise.class, enterpriseId);
+        vehicle.setEnterprise(e);
         Brand b = entityManager.merge(brand);
         vehicle.setBrand(b);
         entityManager.persist(vehicle);
@@ -88,8 +99,9 @@ public class VehicleController {
 
         model.addAttribute("brands", allBrandsRepository.findAll());
         model.addAttribute("v", vehicleRepository.findVehicleById(id));
+        model.addAttribute("enterprises", enterpriseRepository.findAll());
 
-        return "changeVehicleView.html";
+        return "homeAndVehicle/changeVehicleView.html";
     }
 
 //     Работает, но нужно поправить вью
@@ -100,8 +112,10 @@ public class VehicleController {
     @PostMapping("/changeVehicle")
     public String changeVehicle(@ModelAttribute Vehicle vehicle,
                                 @ModelAttribute Brand brand,
+                                @RequestParam(name = "enterpriseId") int enterpriseId,
                                 @RequestParam int idBrand) {
-
+        Enterprise e = entityManager.find(Enterprise.class, enterpriseId);
+        vehicle.setEnterprise(e);
         brand.setId(idBrand);
         vehicle.setBrand(brand);
         entityManager.merge(vehicle);

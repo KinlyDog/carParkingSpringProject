@@ -25,7 +25,6 @@ public class Brand {
     @Column(name = "average_lkm")
     private BigDecimal averageLKM;
 
-    //TODO перевести в enum
     private String type;
 }
 

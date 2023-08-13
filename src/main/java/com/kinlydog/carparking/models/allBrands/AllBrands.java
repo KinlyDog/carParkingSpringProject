@@ -1,4 +1,4 @@
-package com.kinlydog.carparking.models;
+package com.kinlydog.carparking.models.allBrands;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

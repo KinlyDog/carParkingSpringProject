@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -23,7 +23,9 @@
             <th>Safety<br>Rating</th>
             <th>Seating<br>Capacity</th>
             <th>Fuel<br>Capacity</th>
-            <th>Average<br> LKM</th>
+            <th>Average<br>LKM</th>
+            <th>Enterprise</th>
+            <th>Active<br>driver</th>
             <th>Change</th>
             <th>Delete</th>
         </tr>
@@ -40,6 +42,8 @@
             <td th:text="${v.brand.seatingCapacity}"></td>
             <td th:text="${v.brand.fuelCapacity}"></td>
             <td th:text="${v.brand.averageLKM}"></td>
+            <td th:text="${v.enterprise.name}"></td>
+            <td th:text="${v.activeDriver}"></td>
             <td>
                 <form th:action="@{/changeVehicleView}" method="post">
                     <input type="hidden" name="id" th:value="${v.id}"/>
@@ -56,6 +60,41 @@
         </tr>
     </table>
 
+    <br>
+
+
+    <h2>Enterprises list</h2>
+    <table class="styled-table">
+        <tr>
+            <th>id</th>
+            <th>Name</th>
+            <th>City</th>
+            <th>Vehicles</th> <!-- Добавленный заголовок -->
+            <th>Drivers</th> <!-- Добавленный заголовок -->
+        </tr>
+
+        <tr th:each="e: ${enterprises}">
+            <td th:text="${e.id}"></td>
+            <td th:text="${e.name}"></td>
+            <td th:text="${e.city}"></td>
+            <td>
+<!--                <ul>-->
+<!--                    <li th:each="vehicle: ${e.vehicles}" th:text="${vehicle.name}"></li>-->
+<!--                </ul>-->
+            </td>
+            <td>
+                <ul>
+                    <li th:each="driver: ${e.drivers}" th:text="${driver.name}"></li>
+                </ul>
+            </td>
+        </tr>
+
+    </table>
+
+    <br>
+    <form th:action="@{/addEnterprise}" method="get">
+        <button type="submit">Add enterprise</button>
+    </form>
     <br>
     <form th:action="@{/addVehicle}" method="get">
         <button type="submit">Add vehicle</button>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <h2>Add a vehicle</h2>
+    <form action="/addEnterprise" method="post">
+        Name: <input type="text" name="name"><br>
+        City: <input type="text" name="city"><br>
+        <button type="submit">Add</button>
+    </form>
+</div>
+</body>
+</html>

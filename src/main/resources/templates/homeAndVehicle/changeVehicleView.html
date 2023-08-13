@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home page</title>
-    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -14,11 +14,19 @@
         <input type="hidden" name="idBrand" th:value="${v.brand.id}">
 
         <label for="brand">Brand name:</label>
-        <select id="brand" name="name">
+        <select id="brand" name="name" th:required="required">
             <option th:value="${v.brand.name}" th:selected="true" th:text="${v.brand.name}"></option>
-            <option th:each="brand : ${brands}" th:if="${brand.name != v.brand.name}" th:value="${brand.name}"
-                    th:text="${brand.name}"></option>
+            <option th:each="b : ${brands}" th:if="${b.name != v.brand.name}" th:value="${b.name}"
+                    th:text="${b.name}"></option>
         </select><br>
+
+        <label for="enterprise">Enterprises name:</label>
+        <select id="enterprise" name="enterpriseId" th:required="required">
+            <option th:value="${v.enterprise.id}" th:selected="true" th:text="${v.enterprise.name}"></option>
+            <option th:each="e : ${enterprises}" th:if="${e.id != v.enterprise.id}" th:value="${e.id}"
+                    th:text="${e.name}"></option>
+        </select><br>
+
         Type: <input type="text" name="type" th:value="${v.brand.type}"><br>
         Year: <input type="text" name="year" th:value="${v.year}"><br>
         Color: <input type="text" name="color" th:value="${v.color}"><br>
@@ -29,6 +37,13 @@
         Fuel capacity: <input type="number" name="fuelCapacity" th:value="${v.brand.fuelCapacity}"><br>
         Average LKM: <input type="text" name="averageLKM" step="0.01" pattern="[0-9]+(\.[0-9]{1,2})?"
                             th:value="${v.brand.averageLKM}"><br>
+
+<!--        <label for="brand">Brand name:</label>-->
+<!--        <select id="brand" name="name">-->
+<!--            <option th:value="${v.brand.name}" th:selected="true" th:text="${v.brand.name}"></option>-->
+<!--            <option th:each="brand : ${brands}" th:if="${brand.name != v.brand.name}" th:value="${brand.name}"-->
+<!--                    th:text="${brand.name}"></option>-->
+<!--        </select>-->
         <button type="submit">Change</button>
     </form>
 </div>

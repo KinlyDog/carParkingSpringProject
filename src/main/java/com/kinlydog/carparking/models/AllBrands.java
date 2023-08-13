@@ -2,10 +2,11 @@ package com.kinlydog.carparking.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
-import org.springframework.data.relational.core.mapping.Table;
 
 @Data
+@Entity
 @Table(name = "all_brands")
 public class AllBrands {
 

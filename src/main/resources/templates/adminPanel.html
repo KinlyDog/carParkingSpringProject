@@ -43,6 +43,7 @@
             <td>
                 <form th:action="@{/changeVehicleView}" method="post">
                     <input type="hidden" name="id" th:value="${v.id}"/>
+                    <input type="hidden" name="idBrand" th:value="${v.brand.id}"/>
                     <button type="submit">Change</button>
                 </form>
             </td>
@@ -92,14 +93,14 @@
             <th>Type</th>
         </tr>
 
-        <tr th:each="b: ${brands}">
-            <td th:text="${b.id}"></td>
-            <td th:text="${b.name}"></td>
-            <td th:text="${b.safetyRating}"></td>
-            <td th:text="${b.seatingCapacity}"></td>
-            <td th:text="${b.fuelCapacity}"></td>
-            <td th:text="${b.averageLKM}"></td>
-            <td th:text="${b.type}"></td>
+        <tr th:each="b: ${vehicles}">
+            <td th:text="${b.brand.id}"></td>
+            <td th:text="${b.brand.name}"></td>
+            <td th:text="${b.brand.safetyRating}"></td>
+            <td th:text="${b.brand.seatingCapacity}"></td>
+            <td th:text="${b.brand.fuelCapacity}"></td>
+            <td th:text="${b.brand.averageLKM}"></td>
+            <td th:text="${b.brand.type}"></td>
         </tr>
 
     </table>

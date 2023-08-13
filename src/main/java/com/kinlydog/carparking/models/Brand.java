@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 public class Brand {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;

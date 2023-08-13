@@ -25,3 +25,15 @@ CREATE TABLE IF NOT EXISTS all_brands
     id   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
+--
+-- CREATE TABLE IF NOT EXISTS enterprise
+-- (
+--     id   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     name VARCHAR(50) NOT NULL
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS driver
+-- (
+--     id   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
+--     name VARCHAR(50) NOT NULL
+-- );

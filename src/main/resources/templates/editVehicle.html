@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <h2>Edit a vehicle</h2>
+    <form action="/edit-vehicle" method="post">
+
+        <!--
+        Рабочий вариант выпадающего списка.
+        По умолчанию выбран текущий бренд редактируемого авто.
+        Параметр brandId передается в контроллер.
+        -->
+        <label for="brand">Brand name:</label>
+        <select id="brand" th:name="brandId" th:required="required">
+            <option th:value="${vehicle.brand.name}" th:selected="true" th:text="${vehicle.brand.name}"></option>
+            <option th:each="brand : ${brands}" th:unless="${brand.name == vehicle.brand.name}" th:value="${brand.id}"
+                    th:text="${brand.name}"></option>
+        </select><br>
+
+        <!-- id передается в Model в скрытом виде -->
+        <input type="hidden" name="id" th:value="${vehicle.id}"/>
+        Color: <input type="text" name="color" th:value="${vehicle.color}"><br>
+        Year: <input type="number" name="year" th:value="${vehicle.year}"><br>
+        Odometer: <input type="number" name="odometer" th:value="${vehicle.odometer}"><br>
+        Price: <input type="number" name="price" th:value="${vehicle.price}"><br>
+
+
+        <button type="submit">Edit</button>
+    </form>
+</div>
+</body>
+</html>

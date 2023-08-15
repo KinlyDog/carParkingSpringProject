@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="page-wrapper">
+    <h2>Add a vehicle</h2>
+    <form action="/new-vehicle" method="post">
+
+        <!--
+        Рабочий вариант выпадающего списка.
+        По умолчанию выбрано поле, ничего не выбрать нельзя.
+        Передается параметр brandId в контроллер
+        -->
+        <label for="brand">Brand name:</label>
+        <select id="brand" th:name="brandId" required>
+            <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+        </select><br>
+
+        Color: <input type="text" name="color"><br>
+        Year: <input type="number" name="year"><br>
+        Odometer: <input type="number" name="odometer"><br>
+        Price: <input type="number" name="price"><br>
+
+        <button type="submit">Add</button>
+    </form>
+</div>
+</body>
+</html>

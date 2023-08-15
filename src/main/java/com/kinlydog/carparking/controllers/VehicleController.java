@@ -1,126 +1,79 @@
 package com.kinlydog.carparking.controllers;
 
-import com.kinlydog.carparking.models.Brand;
-import com.kinlydog.carparking.models.Enterprise;
-import com.kinlydog.carparking.models.Vehicle;
-//import com.kinlydog.carparking.repositoryes.BrandRepository;
-import com.kinlydog.carparking.repositoryes.AllBrandsRepository;
-import com.kinlydog.carparking.repositoryes.BrandRepository;
-import com.kinlydog.carparking.repositoryes.EnterpriseRepository;
-import com.kinlydog.carparking.repositoryes.VehicleRepository;
-import jakarta.persistence.EntityManager;
+import com.kinlydog.carparking.dao.BrandDAO;
+import com.kinlydog.carparking.dao.VehicleDAO;
+import com.kinlydog.carparking.entity.Brand;
+import com.kinlydog.carparking.entity.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class VehicleController {
+    private final String TO_ADMIN;
 
-    private static final String REDIRECT_ADMIN_PANEL = "redirect:adminPanel";
+    private final VehicleDAO vehicleDAO;
+    private final BrandDAO brandDAO;
 
-    private final VehicleRepository vehicleRepository;
-    private final BrandRepository brandRepository;
-    private final AllBrandsRepository allBrandsRepository;
-    private final EnterpriseRepository enterpriseRepository;
-
-    private final EntityManager entityManager;
-
-    public VehicleController(
-            VehicleRepository vehicleRepository,
-            BrandRepository brandRepository,
-            AllBrandsRepository allBrandsRepository,
-            EnterpriseRepository enterpriseRepository,
-            EntityManager entityManager) {
-
-        this.vehicleRepository = vehicleRepository;
-        this.brandRepository = brandRepository;
-        this.allBrandsRepository = allBrandsRepository;
-        this.entityManager = entityManager;
-        this.enterpriseRepository = enterpriseRepository;
+    @Autowired
+    public VehicleController(VehicleDAO vehicleDAO, BrandDAO brandDAO) {
+        TO_ADMIN = "redirect:admin";
+        this.vehicleDAO = vehicleDAO;
+        this.brandDAO = brandDAO;
     }
 
-    @GetMapping("/")
-    public String localhost() {
-        return "/homeAndVehicle/home";
+    @GetMapping("/new-vehicle")
+    String newVehicle(Model model) {
+
+        model.addAttribute("brands", brandDAO.findAll());
+
+        return "newVehicle";
     }
 
-    @GetMapping("/adminPanel")
-    public String allVehicle(Model model) {
-        model.addAttribute("vehicles", vehicleRepository.findAll());
-        model.addAttribute("enterprises", enterpriseRepository.findAll());
+    @PostMapping("/new-vehicle")
+    String newVehicleSave(@ModelAttribute Vehicle vehicle,
+                          @RequestParam("brandId") int brandId) {
 
-        return "homeAndVehicle/adminPanel.html";
-    }
-
-    @GetMapping("/addVehicle")
-    public String addVehicleView(Model model) {
-
-        model.addAttribute("brands", allBrandsRepository.findAll());
-        model.addAttribute("enterprises", enterpriseRepository.findAll());
-
-        return "homeAndVehicle/addVehicle.html";
-    }
-
-    // Посмотреть, как можно изменить добавление бренда
-    // НЕ через merge
-    @Transactional
-    @PostMapping("/addVehicle")
-    public String addVehicle(@ModelAttribute Vehicle vehicle,
-                             @ModelAttribute Brand brand,
-                             @RequestParam(name = "enterpriseId") int enterpriseId) {
-
-        Enterprise e = entityManager.find(Enterprise.class, enterpriseId);
-        vehicle.setEnterprise(e);
-        Brand b = entityManager.merge(brand);
+        Brand b = brandDAO.findById(brandId);
         vehicle.setBrand(b);
-        entityManager.persist(vehicle);
+        vehicleDAO.save(vehicle);
 
-        return REDIRECT_ADMIN_PANEL;
+        return TO_ADMIN;
     }
 
-    @PostMapping("/deleteVehicle")
-    @Transactional
-    public String deleteVehicle(@RequestParam int id) {
+    @PostMapping("/delete-vehicle")
+    String deleteVehicle(@RequestParam("id") int id) {
+        vehicleDAO.delete(id);
 
-        Vehicle v = entityManager.find(Vehicle.class, id);
-        entityManager.remove(v);
-
-        return REDIRECT_ADMIN_PANEL;
+        return TO_ADMIN;
     }
 
-    @PostMapping("/changeVehicleView")
-    public String changeVehicleView(@RequestParam int id,
-                                    @ModelAttribute Vehicle vehicle,
-                                    Model model) {
+    @GetMapping("/edit-vehicle")
+    String editVehicle(@RequestParam("id") int vehicleId,
+                       Model model) {
 
-        model.addAttribute("brands", allBrandsRepository.findAll());
-        model.addAttribute("v", vehicleRepository.findVehicleById(id));
-        model.addAttribute("enterprises", enterpriseRepository.findAll());
+        Vehicle vehicle = vehicleDAO.findById(vehicleId);
+        List<Brand> brands = brandDAO.findAll();
+        model.addAttribute("vehicle", vehicle);
+        model.addAttribute("brands", brands);
 
-        return "homeAndVehicle/changeVehicleView.html";
+        return "editVehicle";
     }
 
-//     Работает, но нужно поправить вью
-//     там где-то ошибка, передается id бренда
-//     одинаковый с id транспорта
-    // П.С. Я пытался, id бренда не передается, почему-то
-    @Transactional
-    @PostMapping("/changeVehicle")
-    public String changeVehicle(@ModelAttribute Vehicle vehicle,
-                                @ModelAttribute Brand brand,
-                                @RequestParam(name = "enterpriseId") int enterpriseId,
-                                @RequestParam int idBrand) {
-        Enterprise e = entityManager.find(Enterprise.class, enterpriseId);
-        vehicle.setEnterprise(e);
-        brand.setId(idBrand);
+    @PostMapping("/edit-vehicle")
+    String editVehicle(@ModelAttribute Vehicle vehicle,
+                       @RequestParam("brandId") int brandId) {
+
+        Brand brand = brandDAO.findById(brandId);
         vehicle.setBrand(brand);
-        entityManager.merge(vehicle);
+        vehicleDAO.update(vehicle);
 
-        return REDIRECT_ADMIN_PANEL;
+        return TO_ADMIN;
     }
-
 }

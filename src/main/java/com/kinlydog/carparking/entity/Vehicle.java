@@ -3,7 +3,6 @@ package com.kinlydog.carparking.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -16,7 +15,7 @@ public class Vehicle {
     @Column(name = "id")
     private int id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
@@ -32,16 +31,14 @@ public class Vehicle {
     @Column(name = "price")
     private int price;
 
-//    // ok
-//    @ManyToOne
-//    @JoinColumn(name = "enterprise_id")
-//    private Enterprise enterprise;
-//
-//    @OneToMany
-//    @JoinColumn(name = "driver_id")
-//    private List<Driver> drivers;
-//
-//    @OneToOne
-//    @JoinColumn(name = "active_driver_id")
-//    private Driver activeDriver;
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
+    @OneToMany(mappedBy = "activeVehicle")
+    private List<Driver> drivers;
+
+    @ManyToOne
+    @JoinColumn(name = "active_driver_id")
+    private Driver activeDriver;
 }

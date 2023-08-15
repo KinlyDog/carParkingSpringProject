@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,5 +33,8 @@ public class Brand {
 
     @Column(name = "average_lkm")
     private BigDecimal averageLKM;
+
+    @OneToMany(mappedBy = "brand")
+    private List<Vehicle> vehicles;
 }
 

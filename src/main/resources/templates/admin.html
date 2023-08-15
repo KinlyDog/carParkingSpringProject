@@ -8,106 +8,40 @@
 </head>
 <body>
 <div class="page-wrapper">
-    <!--    <h1>Admin panel</h1>-->
-
     <br>
-    <!--    <h2>Vehicles list</h2>-->
-    <!--    <table class="styled-table">-->
-    <!--        <tr>-->
-    <!--            <th>id</th>-->
-    <!--            <th>Brand<br>Name</th>-->
-    <!--            <th>Type</th>-->
-    <!--            <th>Year</th>-->
-    <!--            <th>Color</th>-->
-    <!--            <th>Odometer</th>-->
-    <!--            <th>Price</th>-->
-    <!--            <th>Safety<br>Rating</th>-->
-    <!--            <th>Seating<br>Capacity</th>-->
-    <!--            <th>Fuel<br>Capacity</th>-->
-    <!--            <th>Average<br>LKM</th>-->
-    <!--&lt;!&ndash;            <th>Enterprise</th>&ndash;&gt;-->
-    <!--&lt;!&ndash;            <th>Active<br>driver</th>&ndash;&gt;-->
-    <!--            <th>Change</th>-->
-    <!--            <th>Delete</th>-->
-    <!--        </tr>-->
+    <h2>REST</h2>
 
-    <!--        <tr th:each="v: ${vehicles}">-->
-    <!--            <td th:text="${v.id}"></td>-->
-    <!--            <td th:text="${v.brand.name}"></td>-->
-    <!--            <td th:text="${v.brand.type}"></td>-->
-    <!--            <td th:text="${v.year}"></td>-->
-    <!--            <td th:text="${v.color}"></td>-->
-    <!--            <td th:text="${#numbers.formatDecimal(v.odometer, 0, 'WHITESPACE', 0, 'NONE')}"></td>-->
-    <!--            <td th:text="${#numbers.formatDecimal(v.price, 0, 'WHITESPACE', 0, 'NONE')}"></td>-->
-    <!--            <td th:text="${v.brand.safetyRating}"></td>-->
-    <!--            <td th:text="${v.brand.seatingCapacity}"></td>-->
-    <!--            <td th:text="${v.brand.fuelCapacity}"></td>-->
-    <!--            <td th:text="${v.brand.averageLKM}"></td>-->
-    <!--&lt;!&ndash;            <td th:text="${v.enterprise.name}"></td>&ndash;&gt;-->
-    <!--&lt;!&ndash;            <td th:text="${v.activeDriver}"></td>&ndash;&gt;-->
-    <!--            <td>-->
-    <!--                <form th:action="@{/changeVehicleView}" method="post">-->
-    <!--                    <input type="hidden" name="id" th:value="${v.id}"/>-->
-    <!--                    <input type="hidden" name="idBrand" th:value="${v.brand.id}"/>-->
-    <!--                    <button type="submit">Change</button>-->
-    <!--                </form>-->
-    <!--            </td>-->
-    <!--            <td>-->
-    <!--                <form th:action="@{/deleteVehicle}" method="post">-->
-    <!--                    <input type="hidden" name="id" th:value="${v.id}"/>-->
-    <!--                    <button type="submit">Delete</button>-->
-    <!--                </form>-->
-    <!--            </td>-->
-    <!--        </tr>-->
-    <!--    </table>-->
+    <div class="button-container">
+        <form th:action="@{/rest/all-vehicles}" method="get">
+            <button type="submit">All vehicles</button>
+        </form>
 
-    <!--    <br>-->
+        <form th:action="@{/rest/all-brands}" method="get">
+            <button type="submit">All brands</button>
+        </form>
 
+        <form th:action="@{/rest/all-enterprises}" method="get">
+            <button type="submit">All enterprises</button>
+        </form>
 
-    <!--    <h2>Enterprises list</h2>-->
-    <!--    <table class="styled-table">-->
-    <!--        <tr>-->
-    <!--            <th>id</th>-->
-    <!--            <th>Name</th>-->
-    <!--            <th>City</th>-->
-    <!--            <th>Vehicles</th> &lt;!&ndash; Добавленный заголовок &ndash;&gt;-->
-    <!--            <th>Drivers</th> &lt;!&ndash; Добавленный заголовок &ndash;&gt;-->
-    <!--        </tr>-->
+        <form th:action="@{/rest/all-drivers}" method="get">
+            <button type="submit">All drivers</button>
+        </form>
+    </div>
+    <br>
 
-    <!--        <tr th:each="e: ${enterprises}">-->
-    <!--            <td th:text="${e.id}"></td>-->
-    <!--            <td th:text="${e.name}"></td>-->
-    <!--            <td th:text="${e.city}"></td>-->
-    <!--            <td>-->
-    <!--&lt;!&ndash;                <ul>&ndash;&gt;-->
-    <!--&lt;!&ndash;                    <li th:each="vehicle: ${e.vehicles}" th:text="${vehicle.name}"></li>&ndash;&gt;-->
-    <!--&lt;!&ndash;                </ul>&ndash;&gt;-->
-    <!--            </td>-->
-    <!--            <td>-->
-    <!--                <ul>-->
-    <!--                    <li th:each="driver: ${e.drivers}" th:text="${driver.name}"></li>-->
-    <!--                </ul>-->
-    <!--            </td>-->
-    <!--        </tr>-->
-
-    <!--    </table>-->
-
-    <!--    <br>-->
-    <!--    <form th:action="@{/addEnterprise}" method="get">-->
-    <!--        <button type="submit">Add enterprise</button>-->
-    <!--    </form>-->
     <h2>All vehicles</h2>
     <table class="styled-table">
         <tr>
             <th>id</th>
-            <th>brand name</th>
+            <th>Brand name</th>
             <th>b_id</th>
-            <th>color</th>
-            <th>year</th>
-            <th>odometer</th>
-            <th>price</th>
-            <th>edit</th>
-            <th>delete</th>
+            <th>Color</th>
+            <th>Year</th>
+            <th>Odometer</th>
+            <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
 
         </tr>
 
@@ -136,14 +70,11 @@
 
     </table>
     <br>
-    <div class="button-container">
-        <form th:action="@{/new-vehicle}" method="get">
-            <button type="submit">New vehicle</button>
-        </form>
-        <form th:action="@{/rest/all-vehicles}" method="get">
-            <button type="submit">JSON all vehicles</button>
-        </form>
-    </div>
+
+    <form th:action="@{/new-vehicle}" method="get">
+        <button type="submit">New vehicle</button>
+    </form>
+    <br>
 
 
     <br>
@@ -151,13 +82,13 @@
     <table class="styled-table">
         <tr>
             <th>id</th>
-            <th>name</th>
-            <th>type</th>
-            <th>safety<br/>rating</th>
-            <th>seating<br/>capacity</th>
-            <th>fuel<br/>capacity</th>
-            <th>average<br/>L/KM</th>
-            <th>delete</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Safety<br/>rating</th>
+            <th>Seating<br/>capacity</th>
+            <th>Fuel<br/>capacity</th>
+            <th>Average<br/>L/KM</th>
+            <th>Delete</th>
         </tr>
 
         <tr th:each="b: ${brands}">

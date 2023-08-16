@@ -1,11 +1,15 @@
 package com.kinlydog.carparking.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "drivers")
 public class Driver {
@@ -28,11 +32,9 @@ public class Driver {
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 
-
-    @OneToMany(mappedBy = "activeDriver")
-    private List<Vehicle> vehicles;
-
-    @ManyToOne
-    @JoinColumn(name = "active_vehicle_id")
+    @OneToOne(mappedBy = "activeDriver")
     private Vehicle activeVehicle;
+
+    @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
+    private Set<VehicleDriverAssignment> vehicleAssignments;
 }

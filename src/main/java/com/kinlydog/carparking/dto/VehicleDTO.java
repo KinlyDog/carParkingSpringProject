@@ -1,8 +1,12 @@
 package com.kinlydog.carparking.dto;
 
+import com.kinlydog.carparking.entity.VehicleDriverAssignment;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class VehicleDTO {
@@ -23,5 +27,5 @@ public class VehicleDTO {
 
     private int activeDriverId;
 
-    private List<Integer> drivers;
+    private Set<Integer> drivers;
 }

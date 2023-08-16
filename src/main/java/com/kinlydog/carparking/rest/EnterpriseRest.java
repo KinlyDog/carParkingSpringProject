@@ -38,13 +38,13 @@ public class EnterpriseRest {
 
                     dto.setDrivers(driverIds.isEmpty() ? null : driverIds);
 
-                    if (!enterprise.getVehicles().isEmpty()) {
-                        List<Integer> vehicleIds = enterprise.getVehicles().stream()
-                                .map(Vehicle::getId)
-                                .toList();
 
-                        dto.setVehicles(vehicleIds.isEmpty() ? null : vehicleIds);
-                    }
+                    List<Integer> vehicleIds = enterprise.getVehicles().stream()
+                            .map(Vehicle::getId)
+                            .toList();
+
+                    dto.setVehicles(vehicleIds.isEmpty() ? null : vehicleIds);
+
 
                     return dto;
                 })

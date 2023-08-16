@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 public class DriverRest {
@@ -37,10 +39,10 @@ public class DriverRest {
                         dto.setActiveVehicleId(driver.getActiveVehicle().getId());
                     }
 
-                    List<Integer> vehicleIds = driver.getVehicles().stream()
-                            .map(Vehicle::getId)
-                            .toList();
-
+                    Set<Integer> vehicleIds = driver.getVehicleAssignments()
+                            .stream()
+                            .map(assignment -> assignment.getVehicle().getId())
+                            .collect(Collectors.toSet());
                     dto.setVehicles(vehicleIds.isEmpty() ? null : vehicleIds);
 
                     return dto;

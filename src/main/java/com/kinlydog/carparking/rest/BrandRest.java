@@ -1,28 +1,30 @@
 package com.kinlydog.carparking.rest;
 
-import com.kinlydog.carparking.dao.BrandDAO;
+import com.kinlydog.carparking.dao.BrandRepository;
 import com.kinlydog.carparking.dto.BrandDTO;
 import com.kinlydog.carparking.entity.Brand;
 import com.kinlydog.carparking.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class BrandRest {
 
-    private final BrandDAO brandDAO;
+    private final BrandRepository brandRepository;
 
     @Autowired
-    public BrandRest(BrandDAO brandDAO) {
-        this.brandDAO = brandDAO;
+    public BrandRest(BrandRepository brandRepository) {
+        this.brandRepository = brandRepository;
     }
 
-    @GetMapping("/rest/all-brands")
+    @GetMapping("/brands")
     public List<BrandDTO> getAllBrands() {
-        List<Brand> brands = brandDAO.findAll();
+        List<Brand> brands = brandRepository.findAll();
 
         return brands.stream()
                 .map(brand -> {

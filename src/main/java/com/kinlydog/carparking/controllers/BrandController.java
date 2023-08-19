@@ -1,7 +1,6 @@
 package com.kinlydog.carparking.controllers;
 
-import com.kinlydog.carparking.dao.BrandDAO;
-import com.kinlydog.carparking.dao.VehicleDAO;
+import com.kinlydog.carparking.dao.BrandRepository;
 import com.kinlydog.carparking.entity.Brand;
 import com.kinlydog.carparking.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class BrandController {
     private final String TO_ADMIN;
-    private final BrandDAO brandDAO;
+    private final BrandRepository brandRepository;
 
     @Autowired
-    public BrandController(BrandDAO brandDAO) {
+    public BrandController(BrandRepository brandRepository) {
         TO_ADMIN = "redirect:admin";
-        this.brandDAO = brandDAO;
+        this.brandRepository = brandRepository;
     }
 
     @GetMapping("/new-brand")
@@ -31,14 +30,14 @@ public class BrandController {
 
     @PostMapping("/new-brand")
     String newBrandSave(@ModelAttribute Brand brand) {
-        brandDAO.save(brand);
+        brandRepository.save(brand);
 
         return TO_ADMIN;
     }
 
     @PostMapping("/delete-brand")
     String deleteBrand(@RequestParam("id") int id) {
-        brandDAO.delete(id);
+        brandRepository.deleteById(id);
 
         return TO_ADMIN;
     }

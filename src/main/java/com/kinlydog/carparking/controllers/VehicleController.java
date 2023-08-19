@@ -1,7 +1,7 @@
 package com.kinlydog.carparking.controllers;
 
-import com.kinlydog.carparking.dao.BrandDAO;
-import com.kinlydog.carparking.dao.VehicleDAO;
+import com.kinlydog.carparking.dao.BrandRepository;
+import com.kinlydog.carparking.dao.VehicleRepository;
 import com.kinlydog.carparking.entity.Brand;
 import com.kinlydog.carparking.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +18,22 @@ import java.util.List;
 public class VehicleController {
     private final String TO_ADMIN;
 
-    private final VehicleDAO vehicleDAO;
-    private final BrandDAO brandDAO;
+    private final VehicleRepository vehicleRepository;
+    private final BrandRepository brandRepository;
 
     @Autowired
-    public VehicleController(VehicleDAO vehicleDAO, BrandDAO brandDAO) {
-        TO_ADMIN = "redirect:admin";
-        this.vehicleDAO = vehicleDAO;
-        this.brandDAO = brandDAO;
+    public VehicleController(VehicleRepository vehicleRepository,
+                             BrandRepository brandRepository) {
+
+        this.TO_ADMIN = "redirect:admin";
+        this.vehicleRepository = vehicleRepository;
+        this.brandRepository = brandRepository;
     }
 
     @GetMapping("/new-vehicle")
     String newVehicle(Model model) {
 
-        model.addAttribute("brands", brandDAO.findAll());
+        model.addAttribute("brands", brandRepository.findAll());
 
         return "newVehicle";
     }
@@ -40,16 +42,16 @@ public class VehicleController {
     String newVehicleSave(@ModelAttribute Vehicle vehicle,
                           @RequestParam("brandId") int brandId) {
 
-        Brand b = brandDAO.findById(brandId);
+        Brand b = brandRepository.findById(brandId).orElse(null);
         vehicle.setBrand(b);
-        vehicleDAO.save(vehicle);
+        vehicleRepository.save(vehicle);
 
         return TO_ADMIN;
     }
 
     @PostMapping("/delete-vehicle")
     String deleteVehicle(@RequestParam("id") int id) {
-        vehicleDAO.delete(id);
+        vehicleRepository.deleteById(id);
 
         return TO_ADMIN;
     }
@@ -58,8 +60,9 @@ public class VehicleController {
     String editVehicle(@RequestParam("id") int vehicleId,
                        Model model) {
 
-        Vehicle vehicle = vehicleDAO.findById(vehicleId);
-        List<Brand> brands = brandDAO.findAll();
+        Vehicle vehicle =
+                vehicleRepository.findById(vehicleId).orElse(null);
+        List<Brand> brands = brandRepository.findAll();
         model.addAttribute("vehicle", vehicle);
         model.addAttribute("brands", brands);
 
@@ -70,9 +73,9 @@ public class VehicleController {
     String editVehicle(@ModelAttribute Vehicle vehicle,
                        @RequestParam("brandId") int brandId) {
 
-        Brand brand = brandDAO.findById(brandId);
+        Brand brand = brandRepository.findById(brandId).orElse(null);
         vehicle.setBrand(brand);
-        vehicleDAO.update(vehicle);
+        vehicleRepository.save(vehicle);
 
         return TO_ADMIN;
     }

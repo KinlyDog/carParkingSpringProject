@@ -1,11 +1,11 @@
 package com.kinlydog.carparking.rest;
 
-import com.kinlydog.carparking.dao.VehicleDAO;
+import com.kinlydog.carparking.dao.VehicleRepository;
 import com.kinlydog.carparking.dto.VehicleDTO;
-import com.kinlydog.carparking.entity.Driver;
 import com.kinlydog.carparking.entity.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -13,18 +13,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api")
 public class VehicleRest {
 
-    private final VehicleDAO vehicleDAO;
+    private final VehicleRepository vehicleRepository;
 
     @Autowired
-    public VehicleRest(VehicleDAO vehicleDAO) {
-        this.vehicleDAO = vehicleDAO;
+    public VehicleRest(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
     }
 
-    @GetMapping("/rest/all-vehicles")
+    @GetMapping("/vehicles")
     public List<VehicleDTO> getAllVehicles() {
-        List<Vehicle> vehicles = vehicleDAO.findAll();
+        List<Vehicle> vehicles = vehicleRepository.findAll();
 
         return vehicles.stream()
                 .map(vehicle -> {

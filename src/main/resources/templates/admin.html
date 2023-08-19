@@ -12,19 +12,19 @@
     <h2>REST</h2>
 
     <div class="button-container">
-        <form th:action="@{/rest/all-vehicles}" method="get">
+        <form th:action="@{/api/vehicles}" method="get">
             <button type="submit">All vehicles</button>
         </form>
 
-        <form th:action="@{/rest/all-brands}" method="get">
+        <form th:action="@{/api/brands}" method="get">
             <button type="submit">All brands</button>
         </form>
 
-        <form th:action="@{/rest/all-enterprises}" method="get">
+        <form th:action="@{/api/enterprises}" method="get">
             <button type="submit">All enterprises</button>
         </form>
 
-        <form th:action="@{/rest/all-drivers}" method="get">
+        <form th:action="@{/api/drivers}" method="get">
             <button type="submit">All drivers</button>
         </form>
     </div>

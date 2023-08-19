@@ -34,7 +34,8 @@ public class Brand {
     @Column(name = "average_lkm")
     private BigDecimal averageLKM;
 
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand",
+            cascade = CascadeType.ALL)
     private List<Vehicle> vehicles;
 }
 
